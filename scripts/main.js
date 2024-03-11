@@ -11,8 +11,14 @@ if (btn) {
        var distances = parseInt(distance.value);
         var results = (distances/mileages) * fuelPrices;
         results = parseInt(results);
+        if(isNaN(results)){
+            result.innerHTML = `  <img src="assests/money.png" height="50px" width="50px" class="iconn">
+            <p class="resultTxt">Enter a valid number</p>`;
+        }
+        else {
         result.innerHTML = `  <img src="assests/money.png" height="50px" width="50px" class="iconn">
         <p class="resultTxt">${results}</p>`;
+        }
        
     }
 )}
