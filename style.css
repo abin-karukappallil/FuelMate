@@ -110,4 +110,8 @@ form button {
         font-size: 0.9rem !important;
         font-weight: 700;
     }
+    .header .title {
+        font-size: 1.0rem;
+        font-weight: 100 !important;
+    }
 }
