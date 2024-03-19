@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://media1.tenor.com/m/3yyytNGYC7cAAAAC/empty-tank.gif" alt="FuelMate Logo" style="wdith=30px height=40px">
+  <img src="https://media1.tenor.com/m/3yyytNGYC7cAAAAC/empty-tank.gif" alt="FuelMate Logo" wdith=30px height=40px>
 </div>
 
 # 🚀 FuelMate: Your Quantum Flux Capacitor for Fuel Savings 🌌⛽
