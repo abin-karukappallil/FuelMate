@@ -38,7 +38,7 @@ We can calculate our fuel economy for our trips and don't need to worry about th
 ## Future Development🧑‍💻
 
 Future developing plan is to add fuel price by region wise with a api service and make the user interface more comfortable.
-## Demo
+## Demo👾
 
 
 https://github.com/jacobprasanth02/FuelMate/assets/166240794/b755b039-b95d-4f99-836e-172681ea16f3
