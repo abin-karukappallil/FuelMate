@@ -7,13 +7,14 @@
 Welcome aboard the FuelMate spacecraft, where we defy the laws of fuel dynamics and propel you towards a galaxy of savings! Prepare for an interdimensional journey through the cosmos of cost efficiency!
 
 ## Frontend Development:
-
-Design a user interface (UI) where users can input:
-Petrol price per liter
-Mileage of the vehicle (kilometers per liter).
-Distance of travel (in kilometers).
-Add a button to calculate the cost.
-Display the result of the calculation.
+<ul>
+<li>Design a user interface (UI) where users can input</li>
+<li>Petrol price per liter</li>
+<li>Mileage of the vehicle (kilometers per liter).</li>
+<li>Distance of travel (in kilometers).</li>
+<li>Add a button to calculate the cost.</li>
+<li>Display the result of the calculation.</li>
+</ul>
 
 ## Backend Development:
 
