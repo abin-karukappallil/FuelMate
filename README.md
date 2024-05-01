@@ -18,7 +18,7 @@ Welcome aboard the FuelMate spacecraft, where we defy the laws of fuel dynamics 
 
 ## Backend Development:
 
-Develop the backend logic to handle user inputs and calculate the cost of petrol for the journey.
+Develop the backend logic to handle user inputs and calculate the cost of petrol for the journey.<br>
 This logic will involve taking the inputs (petrol price, mileage, distance) and performing the calculation: cost = (distance / mileage) * petrol price.
 
 ## Contributing: Let's Unravel the Fabric of Reality! 🚀
