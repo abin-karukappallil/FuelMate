@@ -6,36 +6,19 @@
 
 Welcome aboard the FuelMate spacecraft, where we defy the laws of fuel dynamics and propel you towards a galaxy of savings! Prepare for an interdimensional journey through the cosmos of cost efficiency!
 
-## Features That Defy Gravity 🌟
+## Frontend Development:
 
-- **Quantum Estimation**: Input your vehicle's mileage and the current fuel price, and watch FuelMate bend the fabric of reality to calculate your fuel costs at the speed of light.
-- **Nebulaic Updates**: Witness the cosmic dance of equations as FuelMate manipulates gravitational forces to adjust your mileage or fuel price inputs.
-- **Futuristic Interface**: Navigate through wormholes of sleek design, crafted with antimatter aesthetics for a truly otherworldly experience.
+Design a user interface (UI) where users can input:
+Petrol price per liter
+Mileage of the vehicle (kilometers per liter).
+Distance of travel (in kilometers).
+Add a button to calculate the cost.
+Display the result of the calculation.
 
-## How to Navigate the Multiverse 🛠️
+## Backend Development:
 
-1. **Input Your Warp Factor**: Whether your vessel traverses warp speed, hyperdrive, or quantum tunnels, FuelMate adapts to your velocity of choice.
-2. **Enter Cosmic Coordinates**: Specify the current fuel price per gallon or liter in your sector of the multiverse.
-3. **Engage Quantum Drive**: Brace yourself for the jump into hyperspace as FuelMate reveals your estimated fuel cost across dimensions.
-4. **Fine-tune Your Quantum Resonance**: Experiment with different inputs to surf the cosmic waves and unlock the secrets of infinite fuel-saving possibilities.
-
-## Installation: Let's Break the Time Barrier! 💻
-
-1. **Clone the Repository**:
-
-    ```bash
-    git clone https://github.com/abin-karukappallil/FuelMate
-    ```
-
-2. **Navigate to FuelMate's Hyperspace Dock**:
-
-    ```bash
-    cd FuelMate
-    ```
-
-3. **Activate Time Capsule**:
-
-    Simply open the `index.html` file in your quantum computing system, transcend the time-space continuum, and let FuelMate be your guide to a reality of boundless savings!
+Develop the backend logic to handle user inputs and calculate the cost of petrol for the journey.
+This logic will involve taking the inputs (petrol price, mileage, distance) and performing the calculation: cost = (distance / mileage) * petrol price.
 
 ## Contributing: Let's Unravel the Fabric of Reality! 🚀
 
