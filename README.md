@@ -41,6 +41,20 @@ Welcome aboard the FuelMate spacecraft, where we defy the laws of fuel dynamics 
 
 FuelMate thrives on collaboration across dimensions! Discovered a quantum anomaly? Have a transcendent feature idea? Don't keep it localized—raise an issue or submit a pull request. Together, we'll rewrite the laws of fuel-saving physics and traverse the infinite cosmos of cost efficiency!
 
+## Problem that can be solved by this project
+
+We can calculate our fuel economy for our trips and don't need to worry about the calculations..it makes a trip plan more faster...
+
+## Tech Stack Used
+
+• Javascript
+• Html
+• Css
+
+## Future Development
+
+Future developing plan is to add fuel price by region wise with a api service and make the user interface more comfortable.
+
 ## License: Let's Transcend Legal Boundaries! 📝
 
 FuelMate transcends traditional licensing—existing beyond the constraints of space and time. For more interdimensional adventures.
