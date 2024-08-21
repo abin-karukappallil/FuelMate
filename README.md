@@ -31,21 +31,18 @@ We can calculate our fuel economy for our trips and don't need to worry about th
 
 ## Tech Stack Used👨‍💻
 
-• Javascript
-• Html
+• Javascript<br>
+• Html<br>
 • Css
 
 ## Future Development🧑‍💻
 
 Future developing plan is to add fuel price by region wise with a api service and make the user interface more comfortable.
-## Demo👾
+<!---## Demo👾
 
+<!---(https://github.com/jacobprasanth02/FuelMate/assets/166240794/b755b039-b95d-4f99-836e-172681ea16f3
 
-https://github.com/jacobprasanth02/FuelMate/assets/166240794/b755b039-b95d-4f99-836e-172681ea16f3
-
-https://abin-karukappallil.github.io/FuelMate/
-
-
+https://abin-karukappallil.github.io/FuelMate/--->
 ## License: Let's Transcend Legal Boundaries! 📝
 
 FuelMate transcends traditional licensing—existing beyond the constraints of space and time. For more interdimensional adventures.
