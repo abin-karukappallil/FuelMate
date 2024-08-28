@@ -13,7 +13,7 @@ if (btn) {
         results = parseInt(results);
         if(isNaN(results)){
             result.innerHTML = `  <img src="assests/money.png" height="50px" width="50px" class="iconn">
-            <p class="resultTxt">Enter a valid number</p>`;
+            <p class="resultTxt" style="font-size:1rem ">Enter a valid number</p>`;
         }
         else {
         result.innerHTML = `  <img src="assests/money.png" height="50px" width="50px" class="iconn">

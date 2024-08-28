@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .header {
@@ -32,28 +33,36 @@ form {
     display: flex;
     flex-direction: column;
     gap: 36px;
+    min-width: 84vw;
     margin: 2% 10% 2% 10%;
     align-items: center;
 }
 
 form input {
-    min-width: 30%;
+    min-width: 20rem;
     height: 40px;
     border-radius: 50px;
     border: none;
     padding-left: 10px;
     box-shadow: inset 0 0 15px black;
 }
+.alignnn{
+    display: flex;
+    flex-direction: column;
 
+}
 form button {
     height: 40px;
-    width: 10%;
+    min-width: 5rem;
     border-radius: 50px;
     border: none;
+    opacity: 0.5;
     box-shadow: 0 8px 6px -6px black;
     cursor: pointer;
 }
-
+button:hover{
+    opacity: 1;
+}
 .finalCentre {
     display: flex;
     flex-direction: column;
