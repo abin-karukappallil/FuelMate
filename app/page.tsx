@@ -71,7 +71,6 @@ const [visible, setVisible] = React.useState(false);
       }}
       aria-label="Fuel price"
       value={fuelPrice}
-      disabled
     />
       <label className='mb-3 mt-3' htmlFor="fuel price">Enter Milleage of your vehicle</label>
         <Input
