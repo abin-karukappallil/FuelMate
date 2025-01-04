@@ -27,7 +27,9 @@ const [visible, setVisible] = React.useState(false);
           throw new Error('not found');
         }
       } catch (error) {
+        console.error(error);
         throw new Error(`Failed`);
+        
       }
     }
     getFuelPrice();
