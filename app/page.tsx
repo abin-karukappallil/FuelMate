@@ -71,8 +71,7 @@ const [visible, setVisible] = React.useState(false);
       }}
       aria-label="Fuel price"
           {/*value={fuelPrice}*/}
-      onChange={(e)=>setFuelPrice(e.target.value)
-    />
+      onChange={(e)=>setFuelPrice(e.target.value)}/>
       <label className='mb-3 mt-3' htmlFor="fuel price">Enter Milleage of your vehicle</label>
         <Input
       className={'dark'}
