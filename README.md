@@ -31,9 +31,7 @@ We can calculate our fuel economy for our trips and don't need to worry about th
 
 ## Tech Stack Used👨‍💻
 
-• Javascript<br>
-• Html<br>
-• Css
+• NextJs
 
 ## Future Development🧑‍💻
 
