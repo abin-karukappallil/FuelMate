@@ -6,7 +6,7 @@ import * as cheerio from "cheerio"
 import { IndianRupee, Droplets, GaugeCircle, Map, Fuel } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { motion, AnimatePresence } from "framer-motion"
-import { fadeInUp, staggerChildren, pulseAnimation, floatAnimation } from "@/lib/enhanced-animations"
+import { fadeInUp, staggerChildren, pulseAnimation } from "@/lib/enhanced-animations"
 
 export default function EnhancedFuelPriceCalculator() {
   const [fuelPrice, setFuelPrice] = useState("")
