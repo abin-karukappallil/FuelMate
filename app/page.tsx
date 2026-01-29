@@ -21,17 +21,46 @@ export default function EnhancedFuelPriceCalculator() {
       if (!selectedFuelType) return
 
       try {
-        const url = "https://parkplus.io/fuel-price/kerala"
+        const url = "https://parkplus.io/fuel-price/petrol-diesel-price-in-kottayam"
         const response = await axios.get(url)
         const $ = cheerio.load(response.data)
-        const priceText = $(".markdown_with_table.markdown_with_list.markdown_content p").first().text()
-        const words = priceText.split(" ")
 
-        const petrolPrice = Number.parseFloat(words[7])
-        const dieselPrice = Number.parseFloat(words[words.length - 3])
+        let petrolPrice: number | null = null
+        let dieselPrice: number | null = null
+        const todayTd = $('td').filter(function () {
+          return $(this).text().trim().toLowerCase() === "today"
+        }).first()
+
+        if (todayTd.length) {
+          const tr = todayTd.closest("tr")
+          const tds = tr.find("td")
+          const petrolText = $(tds.get(1)).text().trim()
+          const dieselText = $(tds.get(2)).text().trim()
+          petrolPrice = parseFloat(petrolText.replace(/[^\d.]/g, "")) || null
+          dieselPrice = parseFloat(dieselText.replace(/[^\d.]/g, "")) || null
+        } else {
+          const table = $("table").filter(function () {
+            const txt = $(this).text().toLowerCase()
+            return txt.includes("petrol") && txt.includes("diesel")
+          }).first()
+          const firstRow = table.find("tbody tr").first()
+          if (firstRow.length) {
+            const tds = firstRow.find("td")
+            if (tds.length >= 3) {
+              petrolPrice = parseFloat($(tds.get(1)).text().trim().replace(/[^\d.]/g, "")) || null
+              dieselPrice = parseFloat($(tds.get(2)).text().trim().replace(/[^\d.]/g, "")) || null
+            }
+          }
+        }
 
         const price = selectedFuelType === "Petrol" ? petrolPrice : dieselPrice
-        setFuelPrice(price.toString())
+        if (price != null) {
+          setFuelPrice(price.toString())
+          console.log("Fetched Prices - Petrol:", petrolPrice, "Diesel:", dieselPrice)
+        } else {
+          console.warn("Could not parse petrol/diesel price from page")
+          setFuelPrice("")
+        }
       } catch (error) {
         console.error("Failed to fetch fuel price:", error)
         setFuelPrice("")
