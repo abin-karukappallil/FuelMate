@@ -3,22 +3,23 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import * as cheerio from "cheerio"
-import { IndianRupee, Droplets, GaugeCircle, Map, Fuel } from "lucide-react"
+import { Fuel, ChevronDown, Zap, MapPin } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { motion, AnimatePresence } from "framer-motion"
-import { fadeInUp, staggerChildren, pulseAnimation } from "@/lib/enhanced-animations"
 
-export default function EnhancedFuelPriceCalculator() {
+export default function PetrolPumpCalculator() {
   const [fuelPrice, setFuelPrice] = useState("")
   const [mileage, setMileage] = useState("")
   const [distance, setDistance] = useState("")
   const [selectedFuelType, setSelectedFuelType] = useState("")
   const [result, setResult] = useState("")
   const [visible, setVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     async function fetchFuelPrice() {
       if (!selectedFuelType) return
+      setLoading(true)
 
       try {
         const url = "https://parkplus.io/fuel-price/petrol-diesel-price-in-kottayam"
@@ -36,34 +37,21 @@ export default function EnhancedFuelPriceCalculator() {
           const tds = tr.find("td")
           const petrolText = $(tds.get(1)).text().trim()
           const dieselText = $(tds.get(2)).text().trim()
+          
           petrolPrice = parseFloat(petrolText.replace(/[^\d.]/g, "")) || null
           dieselPrice = parseFloat(dieselText.replace(/[^\d.]/g, "")) || null
-        } else {
-          const table = $("table").filter(function () {
-            const txt = $(this).text().toLowerCase()
-            return txt.includes("petrol") && txt.includes("diesel")
-          }).first()
-          const firstRow = table.find("tbody tr").first()
-          if (firstRow.length) {
-            const tds = firstRow.find("td")
-            if (tds.length >= 3) {
-              petrolPrice = parseFloat($(tds.get(1)).text().trim().replace(/[^\d.]/g, "")) || null
-              dieselPrice = parseFloat($(tds.get(2)).text().trim().replace(/[^\d.]/g, "")) || null
-            }
-          }
         }
 
-        const price = selectedFuelType === "Petrol" ? petrolPrice : dieselPrice
-        if (price != null) {
-          setFuelPrice(price.toString())
-          console.log("Fetched Prices - Petrol:", petrolPrice, "Diesel:", dieselPrice)
-        } else {
-          console.warn("Could not parse petrol/diesel price from page")
-          setFuelPrice("")
+        const finalPrice = selectedFuelType === "Petrol" ? petrolPrice : dieselPrice
+        
+        if (finalPrice) {
+          setFuelPrice(finalPrice.toString())
         }
       } catch (error) {
         console.error("Failed to fetch fuel price:", error)
-        setFuelPrice("")
+        setFuelPrice("Error")
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -71,141 +59,121 @@ export default function EnhancedFuelPriceCalculator() {
   }, [selectedFuelType])
 
   const calculatePrice = () => {
-    if (fuelPrice && mileage && distance) {
-      const totalPrice = (Number.parseInt(distance) / Number.parseInt(mileage)) * Number.parseInt(fuelPrice)
+    if (fuelPrice && mileage && distance && fuelPrice !== "Error") {
+      const totalPrice = (parseFloat(distance) / parseFloat(mileage)) * parseFloat(fuelPrice)
       setResult(Math.round(totalPrice).toString())
       setVisible(true)
-    } else {
-      setResult("")
-      setVisible(false)
     }
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-cyan-900 via-teal-800 to-emerald-900 relative overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 bg-[url('/abstract-fuel.jpg')] bg-cover bg-center opacity-10"></div>
-      <motion.div
-        initial="initial"
-        animate="animate"
-        variants={staggerChildren}
-        className="relative z-10 w-full max-w-md p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl rounded-3xl shadow-2xl border border-teal-200 border-opacity-30"
+    <div className="min-h-screen w-full bg-[#1a1a1a] text-white flex items-center justify-center p-4 font-mono">
+      <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-full border-x-4 border-dashed border-yellow-500" />
+      </div>
+
+      <motion.div 
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="relative w-full max-w-[420px]"
       >
-        <motion.h1 variants={fadeInUp} className="text-center text-4xl font-bold mb-8 flex items-center justify-center">
-          <span className="bg-gradient-to-r from-teal-300 via-cyan-300 to-green-300 text-transparent bg-clip-text mr-2">
-            Fuel Mate
-          </span>
-          <Fuel className="w-6 h-6 text-teal-300" />
-        </motion.h1>
-
-        <motion.div variants={staggerChildren} className="space-y-6">
-          <motion.div variants={fadeInUp}>
-            <label className="block mb-2 text-sm font-medium text-teal-100" htmlFor="fuel-type">
-              Fuel Type
-            </label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md shadow-inner hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors duration-200">
-                  <span className="flex items-center">
-                    <Droplets className="mr-2 h-4 w-4" />
-                    {selectedFuelType || "Select fuel type"}
-                  </span>
-                  <span className="ml-2 h-5 w-5 text-teal-200">▼</span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full bg-teal-700 text-white">
-                <DropdownMenuItem onSelect={() => setSelectedFuelType("Petrol")} className="hover:bg-teal-600">
-                  Petrol
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSelectedFuelType("Diesel")} className="hover:bg-teal-600">
-                  Diesel
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </motion.div>
-
-          <motion.div variants={fadeInUp}>
-            <label className="block mb-2 text-sm font-medium text-teal-100" htmlFor="fuel-price">
-              Current Fuel Price
-            </label>
-            <div className="relative">
-              <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-300" />
-              <input
-                type="text"
-                value={fuelPrice ? `₹${fuelPrice}` : ""}
-                disabled
-                className="w-full pl-10 pr-3 py-2 text-white bg-teal-600 bg-opacity-50 border border-teal-400 rounded-md shadow-inner focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
+        <div className="bg-[#d92d20] rounded-t-[40px] p-6 border-b-8 border-[#b91c1c] shadow-xl">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex gap-1">
+              <div className={`w-3 h-3 rounded-full ${loading ? 'bg-yellow-400 animate-pulse' : 'bg-white'}`} />
+              <div className="w-3 h-3 rounded-full bg-white/20" />
             </div>
-          </motion.div>
-
-          <motion.div variants={fadeInUp}>
-            <label className="block mb-2 text-sm font-medium text-teal-100" htmlFor="mileage">
-              Vehicle Mileage
-            </label>
-            <div className="relative">
-              <GaugeCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-300" />
-              <input
-                type="text"
-                placeholder="km/litre"
-                onChange={(e) => setMileage(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 text-white bg-teal-600 bg-opacity-50 border border-teal-400 rounded-md shadow-inner focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-teal-300"
-              />
+            <div className="bg-black/20 px-3 py-1 rounded text-[10px] font-bold tracking-widest uppercase">
+              {selectedFuelType ? `${selectedFuelType} Grade` : "Standby"}
             </div>
-          </motion.div>
+          </div>
+          <h1 className="text-center text-3xl font-black italic tracking-tighter flex items-center justify-center gap-2 text-white">
+            <Fuel className="fill-white" />FUEL MATE
+          </h1>
+        </div>
 
-          <motion.div variants={fadeInUp}>
-            <label className="block mb-2 text-sm font-medium text-teal-100" htmlFor="distance">
-              Travel Distance
-            </label>
-            <div className="relative">
-              <Map className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-300" />
-              <input
-                type="text"
-                placeholder="km"
-                onChange={(e) => setDistance(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 text-white bg-teal-600 bg-opacity-50 border border-teal-400 rounded-md shadow-inner focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-teal-300"
-              />
+        <div className="bg-[#eeeeee] p-8 space-y-8 shadow-2xl relative border-x-[12px] border-[#d92d20]">
+          
+          <div className="bg-[#111] rounded-lg p-6 shadow-inner border-4 border-[#333] relative">
+            <div className="absolute top-2 right-4 text-[8px] text-green-500/50 font-bold uppercase tracking-tighter">TOTAL ₹</div>
+            <div className="flex flex-col items-center">
+              <AnimatePresence mode="wait">
+                <motion.span 
+                  key={result}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-5xl font-black text-green-400 tracking-tighter drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+                >
+                  {visible ? `₹${result}` : "0000"}
+                </motion.span>
+              </AnimatePresence>
+              <div className="w-full h-px bg-green-900/30 my-3" />
+              <div className="flex justify-between w-full text-[10px] text-green-700 font-bold px-1 uppercase">
+                <span>Ltrs: {visible ? (parseFloat(distance)/parseFloat(mileage)).toFixed(2) : "0.00"}</span>
+                <span>Rate: ₹{fuelPrice || "0.00"}</span>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.button
-            variants={pulseAnimation}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <div className="space-y-6">
+            <div className="relative">
+              <label className="text-[10px] font-black text-[#555] uppercase tracking-wider mb-2 block">Fuel Type</label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-full flex items-center justify-between px-4 py-3 bg-white border-2 border-slate-300 text-slate-900 rounded font-bold hover:bg-slate-100 transition-all outline-none">
+                    {selectedFuelType || "SELECT NOZZLE"}
+                    <ChevronDown size={18} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[300px] bg-white border-2 border-black p-0 font-bold">
+                  <DropdownMenuItem onSelect={() => setSelectedFuelType("Petrol")} className="p-4 hover:bg-yellow-400 text-black cursor-pointer">PETROL</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setSelectedFuelType("Diesel")} className="p-4 hover:bg-black hover:text-white text-black cursor-pointer">DIESEL</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-[10px] font-black text-[#555] uppercase tracking-wider mb-2 block">Mileage</label>
+                <input 
+                  type="number"
+                  onChange={(e) => setMileage(e.target.value)}
+                  className="w-full p-3 bg-white border-b-4 border-slate-300 text-slate-900 focus:border-[#d92d20] outline-none font-bold placeholder:text-slate-300"
+                  placeholder="km/L"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-[#555] uppercase tracking-wider mb-2 block">Distance</label>
+                <input 
+                  type="number" 
+                  onChange={(e) => setDistance(e.target.value)}
+                  className="w-full p-3 bg-white border-b-4 border-slate-300 text-slate-900 focus:border-[#d92d20] outline-none font-bold placeholder:text-slate-300"
+                  placeholder="km"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button 
             onClick={calculatePrice}
-            className="w-full py-3 px-4 bg-gradient-to-r from-cyan-400 via-teal-500 to-green-400 text-white font-bold rounded-md shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            disabled={loading}
+            className="w-full bg-[#111] hover:bg-black text-white py-5 rounded-xl font-black uppercase tracking-widest border-b-8 border-slate-800 active:border-b-0 active:translate-y-1 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
           >
-            Calculate
-          </motion.button>
+            <Zap className={`text-yellow-400 fill-yellow-400 ${loading ? 'animate-bounce' : ''}`} />
+            Pump {selectedFuelType}
+          </button>
+        </div>
 
-          <AnimatePresence>
-            {visible && (
-              <motion.div
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={fadeInUp}
-                className="mt-6 text-center"
-              >
-                {isNaN(Number.parseInt(result)) ? (
-                  <p className="text-red-400">Please enter valid inputs</p>
-                ) : (
-                  <motion.div
-                    className="flex flex-col items-center justify-center"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                  >
-                    <p className="text-teal-100 mb-2">Estimated Fuel Cost:</p>
-                    <p className="flex items-center text-5xl font-bold bg-gradient-to-r from-green-300 via-teal-300 to-cyan-300 text-transparent bg-clip-text">
-                      <IndianRupee className="mr-2 h-8 w-8" /> {result}
-                    </p>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+        <div className="bg-[#d92d20] h-12 rounded-b-[20px] shadow-2xl border-t-4 border-black/10 flex items-center justify-around px-10">
+          <div className="w-4 h-4 rounded-full bg-black/20" />
+          <div className="w-4 h-4 rounded-full bg-black/20" />
+          <div className="w-4 h-4 rounded-full bg-black/20" />
+        </div>
+
+        <div className="text-center mt-6">
+           <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center justify-center gap-2">
+             <MapPin size={10} /> FuelMate - abinthomas.dev           </p>
+        </div>
       </motion.div>
     </div>
   )
