@@ -19,9 +19,9 @@ export async function GET(request: Request) {
     if (!fuel) return Response.json({ cities: await getCities(state) })
 
     const rate = await getFuelRate(fuel, state, city)
-    if (!rate) return Response.json({ error: "Park+ has no rate for this fuel and location." }, { status: 404 })
+    if (!rate) return Response.json({ error: "No rate for this fuel and location." }, { status: 404 })
     return Response.json(rate)
   } catch {
-    return Response.json({ error: fuel ? "Couldn’t load the Park+ rate." : "Couldn’t load cities from Park+." }, { status: 502 })
+    return Response.json({ error: fuel ? "Couldn’t load the rate." : "Couldn’t load cities." }, { status: 502 })
   }
 }

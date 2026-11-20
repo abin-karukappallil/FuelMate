@@ -57,11 +57,11 @@ export default function PetrolPumpCalculator() {
   const [result, setResult] = useState<TripCost | null>(null)
   const citiesRequest = useParkPlus<{ cities: City[] }>(
     new URLSearchParams({ state }).toString(),
-    "Couldn’t load cities from Park+.",
+    "Couldn’t load cities.",
   )
   const rateRequest = useParkPlus<FuelRate>(
     new URLSearchParams({ state, city, fuel }).toString(),
-    "Couldn’t load the Park+ rate.",
+    "Couldn’t load the rate.",
   )
 
   const cities = citiesRequest.data?.cities ?? []
@@ -158,7 +158,7 @@ export default function PetrolPumpCalculator() {
               </div>
               {priceDate && Number.isFinite(priceDate.getTime()) && (
                 <div className="mt-2 text-right text-[10px] text-green-400/70">
-                  Park+ · <time dateTime={rate?.updatedOn ?? undefined}>{updateDate.format(priceDate)}</time>
+                   <time dateTime={rate?.updatedOn ?? undefined}>{updateDate.format(priceDate)}</time>
                 </div>
               )}
             </div>

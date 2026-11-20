@@ -33,15 +33,15 @@ async function getPageData(path: string): Promise<NextData | undefined> {
     signal: AbortSignal.timeout(5000),
   })
   if (isMissing(response.status)) return
-  if (!response.ok && response.status !== 503) throw new Error(`Park+ page returned ${response.status}`)
+  if (!response.ok && response.status !== 503) throw new Error(`page returned ${response.status}`)
 
   const html = await response.text()
   const embeddedData = html.match(/<script\b[^>]*\bid=["']__NEXT_DATA__["'][^>]*>([\s\S]*?)<\/script>/i)?.[1]
-  if (!embeddedData) throw new Error("Park+ page is missing its Next.js data")
+  if (!embeddedData) throw new Error("Page is missing its Next.js data")
 
   const data = JSON.parse(embeddedData) as NextData
   if (data.props?.pageProps?.unavailable) return
-  if (!response.ok) throw new Error(`Park+ page returned ${response.status}`)
+  if (!response.ok) throw new Error(`page returned ${response.status}`)
   return data
 }
 
@@ -61,7 +61,7 @@ async function getFuelPage(slug: string): Promise<FuelPage | undefined> {
       if (response.ok && pageProps) return pageProps
     }
     if (!response.ok && !isMissing(response.status)) {
-      throw new Error(`Park+ fuel data returned ${response.status}`)
+      throw new Error(`fuel data returned ${response.status}`)
     }
   }
 
@@ -95,11 +95,11 @@ export async function getCities(state: string): Promise<City[]> {
     next: { revalidate: 86400 },
     signal: AbortSignal.timeout(5000),
   })
-  if (!response.ok) throw new Error(`Park+ city directory returned ${response.status}`)
+  if (!response.ok) throw new Error(` city directory returned ${response.status}`)
 
   type CityEntry = { city_code?: string; city_name?: string }
   const { data } = await response.json() as { data?: { fuel_data?: Record<string, CityEntry>[] } }
-  if (!Array.isArray(data?.fuel_data)) throw new Error("Park+ city directory is missing its city list")
+  if (!Array.isArray(data?.fuel_data)) throw new Error(" city directory is missing its city list")
 
   const cities = new Map<string, City>()
   for (const row of data.fuel_data) {
